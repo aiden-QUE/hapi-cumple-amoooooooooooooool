@@ -1,480 +1,251 @@
-/* =========================
-   CAMBIAR DE PANTALLA
-========================= */
+// =========================
+// CAMBIAR DE PANTALLA
+// =========================
 
 function irAPantalla(id) {
 
-    const pantallas =
-        document.querySelectorAll(".pantalla");
-
-    pantallas.forEach(
-        function(pantalla) {
-
-            pantalla.classList.remove(
-                "activa"
-            );
-
-        }
-    );
-
-
-    const nuevaPantalla =
-        document.getElementById(id);
-
-
-    if (!nuevaPantalla) {
-
-        console.error(
-            "No existe la pantalla:",
-            id
-        );
-
-        return;
-    }
-
-
-    nuevaPantalla.classList.add(
-        "activa"
-    );
-
-
-    window.scrollTo({
-        top: 0,
-        behavior: "smooth"
+    document.querySelectorAll(".pantalla").forEach(function(pantalla) {
+        pantalla.classList.remove("activa");
     });
 
+    const pantallaNueva = document.getElementById(id);
+
+    if (pantallaNueva) {
+        pantallaNueva.classList.add("activa");
+        window.scrollTo(0, 0);
+    }
 }
 
 
-/* =========================
-   INGREDIENTES
-========================= */
+// =========================
+// HACER EL PASTEL
+// =========================
 
-let ingredientes = 0;
+let pasoIngrediente = 0;
 
-
-const ordenIngredientes = [
+const ingredientes = [
     "harina",
     "huevo",
     "leche"
 ];
 
+function agregarIngrediente(ingrediente) {
 
-function agregarIngrediente(tipo) {
-
-    const boton =
-        document.getElementById(tipo);
-
-
-    if (!boton) {
+    if (ingrediente !== ingredientes[pasoIngrediente]) {
         return;
     }
 
+    const boton = document.getElementById(ingrediente);
 
-    if (
-        boton.classList.contains(
-            "bloqueado"
-        )
-    ) {
-        return;
+    if (boton) {
+        boton.disabled = true;
+        boton.classList.add("agregado");
     }
 
+    pasoIngrediente++;
 
-    ingredientes++;
+    if (pasoIngrediente < ingredientes.length) {
 
+        const siguiente = ingredientes[pasoIngrediente];
 
-    boton.disabled = true;
+        const siguienteBoton = document.getElementById(siguiente);
 
+        if (siguienteBoton) {
+            siguienteBoton.disabled = false;
+        }
 
-    boton.classList.add(
-        "bloqueado"
-    );
+        document.getElementById("instruccion").textContent =
+            "Ahora agrega " + siguiente + ".";
 
+    } else {
 
-    document.getElementById(
-        "ingredientes-usados"
-    ).textContent =
-        "Ingredientes: " +
-        ingredientes +
-        " / 3";
+        document.getElementById("instruccion").textContent =
+            "¡Perfecto! Ahora hay que batir.";
 
-
-    document.getElementById(
-        "mezcla"
-    ).style.opacity =
-        ingredientes / 3;
-
-
-    const siguiente =
-        ordenIngredientes[
-            ingredientes
-        ];
-
-
-    if (siguiente) {
-
-        document.getElementById(
-            siguiente
-        ).classList.remove(
-            "bloqueado"
-        );
-
-
-        const mensajes = {
-
-            huevo:
-                "Ahora agrega el huevo.",
-
-            leche:
-                "¡Perfecto! Ahora agrega la leche."
-
-        };
-
-
-        document.getElementById(
-            "instruccion"
-        ).textContent =
-            mensajes[siguiente];
-
+        document.getElementById("batidor").disabled = false;
     }
-
-    else {
-
-        document.getElementById(
-            "instruccion"
-        ).textContent =
-            "¡Tenemos todos los ingredientes!";
-
-
-        document.getElementById(
-            "batir-area"
-        ).classList.remove(
-            "oculto"
-        );
-
-    }
-
 }
 
 
-/* =========================
-   BATIR
-========================= */
+// =========================
+// BATIR
+// =========================
 
 let vecesBatido = 0;
 
-
 function batir() {
-
-    if (
-        vecesBatido >= 5
-    ) {
-        return;
-    }
-
 
     vecesBatido++;
 
+    const progreso = document.getElementById("progreso-batir");
 
-    const porcentaje =
-        vecesBatido * 20;
+    progreso.textContent =
+        "🥄 Batido " + vecesBatido + " / 5";
 
+    if (vecesBatido >= 5) {
 
-    document.getElementById(
-        "progreso-batir"
-    ).style.width =
-        porcentaje + "%";
+        document.getElementById("batidor").disabled = true;
 
+        document.getElementById("instruccion").textContent =
+            "¡Listo! Ahora mete la mezcla al horno.";
 
-    document.getElementById(
-        "contador-batir"
-    ).textContent =
-        vecesBatido +
-        " / 5";
-
-
-    document.getElementById(
-        "mezcla"
-    ).style.transform =
-        "rotate(" +
-        (vecesBatido * 15) +
-        "deg)";
-
-
-    if (
-        vecesBatido === 5
-    ) {
-
-        document.getElementById(
-            "boton-batir"
-        ).disabled = true;
-
-
-        document.getElementById(
-            "horno-area"
-        ).classList.remove(
-            "oculto"
-        );
-
-
-        document.getElementById(
-            "instruccion"
-        ).textContent =
-            "¡La mezcla está lista!";
-
+        document.getElementById("zona-horno").classList.remove("oculto");
     }
-
 }
 
 
-/* =========================
-   HORNO
-========================= */
+// =========================
+// HORNO
+// =========================
 
 function hornear() {
 
-    const mensaje =
-        document.getElementById(
-            "horno-mensaje"
-        );
+    const instruccion = document.getElementById("instruccion");
 
-
-    mensaje.textContent =
+    instruccion.textContent =
         "🔥 Horneando...";
 
+    const botonHorno = document.querySelector("#zona-horno button");
 
-    setTimeout(
-        function() {
+    if (botonHorno) {
+        botonHorno.disabled = true;
+    }
 
-            mensaje.textContent =
-                "✨ ¡DING! ¡El pastel está listo!";
+    setTimeout(function() {
 
-        },
-        2500
-    );
+        irAPantalla("decorar");
 
-
-    setTimeout(
-        function() {
-
-            irAPantalla(
-                "decorar"
-            );
-
-        },
-        4000
-    );
-
+    }, 4000);
 }
 
 
-/* =========================
-   DECORACIÓN
-========================= */
+// =========================
+// DECORAR PASTEL
+// =========================
 
 let colorElegido = null;
-
-
 let decoraciones = [];
-
 
 function elegirColor(color) {
 
     colorElegido = color;
 
+    const pastel = document.getElementById("pastel-final");
 
-    const pastel =
-        document.querySelector(
-            ".pastel-final"
-        );
+    pastel.dataset.color = color;
 
+    document.getElementById("mensaje-decoracion").textContent =
+        "Color elegido: " + color + ". Ahora elige 3 decoraciones.";
 
-    pastel.style.background =
-        color;
-
-
-    pastel.style.boxShadow =
-        "inset 0 0 0 8px rgba(38,55,80,0.2)";
-
-
-    comprobarPastel();
-
+    revisarPastel();
 }
 
 
-function agregarDecoracion(nombre) {
+function agregarDecoracion(numero) {
 
-    if (
-        decoraciones.length >= 3
-    ) {
+    if (decoraciones.length >= 3) {
+
+        document.getElementById("mensaje-decoracion").textContent =
+            "Ya elegiste 3 decoraciones 💙";
+
         return;
     }
 
+    decoraciones.push(numero);
 
-    decoraciones.push(
-        nombre
-    );
-
+    const contenedor =
+        document.getElementById("decoraciones-colocadas");
 
     const imagen =
-        document.createElement(
-            "img"
-        );
-
+        document.createElement("img");
 
     imagen.src =
-        "assets/" + nombre;
+        "assets/decoracion" + numero + ".png";
 
+    imagen.alt =
+        "Decoración";
 
-    imagen.classList.add(
-        "decoracion-puesta"
-    );
+    imagen.classList.add("decoracion-colocada");
 
-
+    // Posiciones diferentes para cada decoración
     const posiciones = [
-
         {
-            top: "20%",
-            left: "25%"
+            left: "20%",
+            top: "20%"
         },
-
         {
-            top: "45%",
-            left: "55%"
+            left: "55%",
+            top: "25%"
         },
-
         {
-            top: "25%",
-            left: "65%"
+            left: "38%",
+            top: "55%"
         }
-
     ];
 
-
     const posicion =
-        posiciones[
-            decoraciones.length - 1
-        ];
+        posiciones[decoraciones.length - 1];
 
+    imagen.style.left = posicion.left;
+    imagen.style.top = posicion.top;
 
-    imagen.style.top =
-        posicion.top;
+    contenedor.appendChild(imagen);
 
+    document.getElementById("mensaje-decoracion").textContent =
+        "Decoraciones: " + decoraciones.length + " / 3";
 
-    imagen.style.left =
-        posicion.left;
-
-
-    document.getElementById(
-        "decoraciones-colocadas"
-    ).appendChild(
-        imagen
-    );
-
-
-    document.getElementById(
-        "contador-decoracion"
-    ).textContent =
-        "Decoraciones: " +
-        decoraciones.length +
-        " / 3";
-
-
-    comprobarPastel();
-
+    revisarPastel();
 }
 
 
-function comprobarPastel() {
+function revisarPastel() {
 
-    if (
+    const terminar =
+        document.getElementById("terminar-pastel");
 
-        colorElegido !== null &&
+    if (colorElegido && decoraciones.length === 3) {
 
-        decoraciones.length === 3
+        terminar.classList.remove("oculto");
 
-    ) {
+        document.getElementById("mensaje-decoracion").textContent =
+            "🎉 ¡Tu pastel quedó precioso!";
 
-        document.getElementById(
-            "terminar-decoracion"
-        ).classList.remove(
-            "oculto"
-        );
+    } else {
 
+        terminar.classList.add("oculto");
     }
-
 }
 
 
-/* =========================
-   REGALOS
-========================= */
+// =========================
+// REGALOS
+// =========================
 
 function abrirCarta() {
 
-    document.getElementById(
-        "carta-area"
-    ).classList.remove(
-        "oculto"
-    );
+    document.getElementById("carta-area")
+        .classList.remove("oculto");
 
-
-    document.getElementById(
-        "caja-area"
-    ).classList.add(
-        "oculto"
-    );
-
+    document.getElementById("caja-area")
+        .classList.add("oculto");
 }
 
 
 function abrirCaja() {
 
-    document.getElementById(
-        "caja-area"
-    ).classList.remove(
-        "oculto"
-    );
+    document.getElementById("caja-area")
+        .classList.remove("oculto");
 
-
-    document.getElementById(
-        "carta-area"
-    ).classList.add(
-        "oculto"
-    );
-
-}
-
-
-function abrirDibujo() {
-
-    document.getElementById(
-        "caja"
-    ).style.display =
-        "none";
-
-
-    document.getElementById(
-        "caja-texto"
-    ).style.display =
-        "none";
-
-
-    document.getElementById(
-        "dibujo-final"
-    ).classList.remove(
-        "oculto"
-    );
-
+    document.getElementById("carta-area")
+        .classList.add("oculto");
 }
 
 
 function cerrarRegalo() {
 
-    document.getElementById(
-        "carta-area"
-    ).classList.add(
-        "oculto"
-    );
+    document.getElementById("carta-area")
+        .classList.add("oculto");
 
+    document.getElementById("caja-area")
+        .classList.add("oculto");
 }
