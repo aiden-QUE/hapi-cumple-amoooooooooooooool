@@ -1,372 +1,274 @@
-/* =========================
-   CAMBIAR DE PANTALLA
-========================= */
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>¡Feliz cumpleaños, Dany!</title>
 
-function irAPantalla(id) {
+    <link rel="stylesheet" href="style.css">
+</head>
 
-    document.querySelectorAll(".pantalla")
-        .forEach(pantalla => {
-            pantalla.classList.remove("activa");
-        });
+<body>
 
-    document.getElementById(id)
-        .classList.add("activa");
+    <!-- INICIO -->
+    <section id="inicio" class="pantalla activa">
+        <div class="contenido">
 
-    window.scrollTo({
-        top: 0,
-        behavior: "smooth"
-    });
-}
+            <h1>¡FELIZ CUMPLEAÑOS, DANY!</h1>
 
+            <img src="assets/chibi.png"
+                 alt="Chibi"
+                 class="chibi">
 
-/* =========================
-   HACER EL PASTEL
-========================= */
+            <div class="dialogo">
+                ¡Hagamos un pastel!
+            </div>
 
-let ingredientes = 0;
+            <button onclick="irAPantalla('pastel')">
+                🍰 Hacer pastel
+            </button>
 
-const ordenIngredientes = [
-    "harina",
-    "huevo",
-    "leche"
-];
+        </div>
+    </section>
 
 
-function agregarIngrediente(tipo) {
+    <!-- HACER PASTEL -->
+    <section id="pastel" class="pantalla">
 
-    const boton = document.getElementById(tipo);
+        <div class="contenido">
 
-    if (
-        boton.classList.contains("bloqueado")
-    ) {
-        return;
-    }
+            <h2>🎂 ¡Hagamos el pastel!</h2>
 
+            <p id="instruccion">
+                Primero agrega la harina.
+            </p>
 
-    ingredientes++;
+            <div class="juego-pastel">
 
-    boton.disabled = true;
+                <div class="ingredientes">
 
-    boton.classList.add("bloqueado");
+                    <button id="harina" onclick="agregarIngrediente('harina')">
+                        <img src="assets/harina.png" alt="Harina">
+                        <span>Harina</span>
+                    </button>
 
+                    <button id="huevo" onclick="agregarIngrediente('huevo')" disabled>
+                        <img src="assets/huevo.png" alt="Huevo">
+                        <span>Huevo</span>
+                    </button>
 
-    document.getElementById(
-        "ingredientes-usados"
-    ).textContent =
-        `Ingredientes: ${ingredientes}/3`;
+                    <button id="leche" onclick="agregarIngrediente('leche')" disabled>
+                        <img src="assets/leche.png" alt="Leche">
+                        <span>Leche</span>
+                    </button>
 
+                </div>
 
-    document.getElementById(
-        "mezcla"
-    ).style.opacity = ingredientes / 3;
+                <div class="zona-pastel">
 
+                    <div class="tazon">
+                        🥣
+                    </div>
 
-    const siguiente =
-        ordenIngredientes[ingredientes];
+                    <button id="batidor" onclick="batir()" disabled>
+                        <img src="assets/batidor.png" alt="Batidor">
+                        <span>Batir</span>
+                    </button>
 
+                    <p id="progreso-batir"></p>
 
-    if (siguiente) {
+                </div>
 
-        document.getElementById(
-            siguiente
-        ).classList.remove("bloqueado");
+            </div>
 
+            <div id="zona-horno" class="oculto">
 
-        const nombres = {
-            huevo: "Ahora agrega el huevo.",
-            leche: "¡Perfecto! Ahora agrega la leche."
-        };
+                <img src="assets/horno.png"
+                     alt="Horno"
+                     class="imagen-horno">
 
+                <button onclick="hornear()">
+                    🔥 Meter al horno
+                </button>
 
-        document.getElementById(
-            "instruccion"
-        ).textContent =
-            nombres[siguiente];
+            </div>
 
-    } else {
+        </div>
 
-        document.getElementById(
-            "instruccion"
-        ).textContent =
-            "¡Tenemos todos los ingredientes!";
+    </section>
 
-        document.getElementById(
-            "batir-area"
-        ).classList.remove("oculto");
 
-    }
+    <!-- DECORAR -->
+    <section id="decorar" class="pantalla">
 
-}
+        <div class="contenido">
 
+            <h2>🎂 ¡Decora el pastel!</h2>
 
-/* =========================
-   BATIR
-========================= */
+            <p>Elige un color y exactamente 3 decoraciones.</p>
 
-let vecesBatido = 0;
+            <div class="decoracion-juego">
 
+                <div class="colores">
 
-function batir() {
+                    <h3>Color</h3>
 
-    if (vecesBatido >= 5) {
-        return;
-    }
+                    <button class="color-btn azul"
+                            onclick="elegirColor('azul')">
+                        💙 Azul
+                    </button>
 
+                    <button class="color-btn rosa"
+                            onclick="elegirColor('rosa')">
+                        💗 Rosa
+                    </button>
 
-    vecesBatido++;
+                    <button class="color-btn amarillo"
+                            onclick="elegirColor('amarillo')">
+                        💛 Amarillo
+                    </button>
 
+                    <button class="color-btn morado"
+                            onclick="elegirColor('morado')">
+                        💜 Morado
+                    </button>
 
-    const porcentaje =
-        vecesBatido * 20;
+                </div>
 
 
-    document.getElementById(
-        "progreso-batir"
-    ).style.width =
-        porcentaje + "%";
+                <div class="pastel-final" id="pastel-final">
 
+                    <img src="assets/pastel.png"
+                         alt="Pastel"
+                         id="imagen-pastel">
 
-    document.getElementById(
-        "contador-batir"
-    ).textContent =
-        `${vecesBatido} / 5`;
+                    <div id="decoraciones-colocadas"></div>
 
+                </div>
 
-    document.getElementById(
-        "mezcla"
-    ).style.transform =
-        `rotate(${vecesBatido * 15}deg)`;
 
+                <div class="decoraciones">
 
-    if (vecesBatido === 5) {
+                    <h3>Decoraciones</h3>
 
-        document.getElementById(
-            "boton-batir"
-        ).disabled = true;
+                    <button onclick="agregarDecoracion(1)">
+                        <img src="assets/decoracion1.png" alt="Decoración 1">
+                    </button>
 
+                    <button onclick="agregarDecoracion(2)">
+                        <img src="assets/decoracion2.png" alt="Decoración 2">
+                    </button>
 
-        document.getElementById(
-            "horno-area"
-        ).classList.remove("oculto");
+                    <button onclick="agregarDecoracion(3)">
+                        <img src="assets/decoracion3.png" alt="Decoración 3">
+                    </button>
 
+                    <button onclick="agregarDecoracion(4)">
+                        <img src="assets/decoracion4.png" alt="Decoración 4">
+                    </button>
 
-        document.getElementById(
-            "instruccion"
-        ).textContent =
-            "¡La mezcla está lista!";
+                    <button onclick="agregarDecoracion(5)">
+                        <img src="assets/decoracion5.png" alt="Decoración 5">
+                    </button>
 
-    }
+                </div>
 
-}
+            </div>
 
+            <p id="mensaje-decoracion"></p>
 
-/* =========================
-   HORNO
-========================= */
+            <button id="terminar-pastel"
+                    class="oculto"
+                    onclick="irAPantalla('regalo')">
+                🎁 ¡Terminé mi pastel!
+            </button>
 
-function hornear() {
+        </div>
 
-    const mensaje =
-        document.getElementById(
-            "horno-mensaje"
-        );
+    </section>
 
 
-    mensaje.textContent =
-        "🔥 Horneando...";
+    <!-- REGALOS -->
+    <section id="regalo" class="pantalla">
 
+        <div class="contenido">
 
-    setTimeout(() => {
+            <h2>🎁 Tengo algo para ti...</h2>
 
-        mensaje.textContent =
-            "✨ ¡DING! ¡El pastel está listo!";
+            <p>Elige un regalo.</p>
 
-    }, 2500);
+            <div class="regalos">
 
+                <button class="regalo-opcion"
+                        onclick="abrirCarta()">
+                    💌
+                    <span>Una carta</span>
+                </button>
 
-    setTimeout(() => {
+                <button class="regalo-opcion"
+                        onclick="abrirCaja()">
+                    🎁
+                    <span>Una cajita</span>
+                </button>
 
-        irAPantalla("decorar");
+            </div>
 
-    }, 4000);
 
-}
+            <div id="carta-area" class="oculto">
 
+                <div class="carta">
+                    <h2>💙 Para mi honey</h2>
 
-/* =========================
-   DECORAR
-========================= */
+                    <p>
+                        Feliz cumpleaños, Dany.
+                    </p>
 
-let colorElegido = null;
+                    <p>
+                        Espero que este pequeño regalo
+                        te haga sonreír y que tengas un
+                        cumpleaños muy bonito.
+                    </p>
 
-let decoraciones = [];
+                    <p>
+                        Te quiero muchísimo. 💙
+                    </p>
+                </div>
 
+                <button onclick="cerrarRegalo()">
+                    Volver
+                </button>
 
-function elegirColor(color) {
+            </div>
 
-    colorElegido = color;
 
+            <div id="caja-area" class="oculto">
 
-    const pastel =
-        document.querySelector(
-            ".pastel-final"
-        );
+                <div class="caja">
 
+                    <div class="tapa">
+                        🎁
+                    </div>
 
-    pastel.style.background =
-        color;
+                    <div class="contenido-caja">
+                        <img src="assets/dibujo-regalo.png"
+                             alt="Dibujo de regalo">
+                    </div>
 
+                </div>
 
-    pastel.style.boxShadow =
-        `inset 0 0 0 8px rgba(38,55,80,0.2)`;
-}
+                <button onclick="cerrarRegalo()">
+                    Volver
+                </button>
 
+            </div>
 
-function agregarDecoracion(nombre) {
+        </div>
 
-    if (decoraciones.length >= 3) {
-        return;
-    }
+    </section>
 
 
-    decoraciones.push(nombre);
+    <!-- IMPORTANTE: este archivo es JavaScript -->
+    <script src="script.js"></script>
 
-
-    const imagen =
-        document.createElement("img");
-
-
-    imagen.src =
-        "assets/" + nombre;
-
-
-    imagen.classList.add(
-        "decoracion-puesta"
-    );
-
-
-    /*
-        Posiciones aleatorias
-        dentro del pastel.
-    */
-
-    const posiciones = [
-        {
-            top: "20%",
-            left: "25%"
-        },
-        {
-            top: "45%",
-            left: "55%"
-        },
-        {
-            top: "25%",
-            left: "65%"
-        }
-    ];
-
-
-    const posicion =
-        posiciones[
-            decoraciones.length - 1
-        ];
-
-
-    imagen.style.top =
-        posicion.top;
-
-
-    imagen.style.left =
-        posicion.left;
-
-
-    document.getElementById(
-        "decoraciones-colocadas"
-    ).appendChild(imagen);
-
-
-    document.getElementById(
-        "contador-decoracion"
-    ).textContent =
-        `Decoraciones: ${decoraciones.length} / 3`;
-
-
-    comprobarPastel();
-
-}
-
-
-function comprobarPastel() {
-
-    if (
-        colorElegido !== null &&
-        decoraciones.length === 3
-    ) {
-
-        document.getElementById(
-            "terminar-decoracion"
-        ).classList.remove("oculto");
-
-    }
-
-}
-
-
-/* =========================
-   REGALOS
-========================= */
-
-function abrirCarta() {
-
-    document.getElementById(
-        "carta-area"
-    ).classList.remove("oculto");
-
-
-    document.getElementById(
-        "caja-area"
-    ).classList.add("oculto");
-
-}
-
-
-function abrirCaja() {
-
-    document.getElementById(
-        "caja-area"
-    ).classList.remove("oculto");
-
-
-    document.getElementById(
-        "carta-area"
-    ).classList.add("oculto");
-
-}
-
-
-function abrirDibujo() {
-
-    document.getElementById(
-        "caja"
-    ).style.display = "none";
-
-
-    document.getElementById(
-        "caja-texto"
-    ).style.display = "none";
-
-
-    document.getElementById(
-        "dibujo-final"
-    ).classList.remove("oculto");
-
-}
-
-
-function cerrarRegalo() {
-
-    document.getElementById(
-        "carta-area"
-    ).classList.add("oculto");
-
-}
+</body>
+</html>
