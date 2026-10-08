@@ -126,20 +126,23 @@ function hornear() {
 let colorElegido = null;
 let decoraciones = [];
 
-function elegirColor(color) {
+const coloresPastel = {
+    azul: "assets/pastel-azul.png",
+    rosa: "assets/pastel-rosa.png",
+    amarillo: "assets/pastel-amarillo.png",
+    morado: "assets/pastel-morado.png"
+};
 
+function elegirColor(color) {
     colorElegido = color;
 
-    const pastel = document.getElementById("pastel-final");
-
-    pastel.dataset.color = color;
+    document.getElementById("imagen-pastel").src = coloresPastel[color];
 
     document.getElementById("mensaje-decoracion").textContent =
         "Color elegido: " + color + ". Ahora elige 3 decoraciones.";
 
     revisarPastel();
 }
-
 
 function agregarDecoracion(numero) {
 
