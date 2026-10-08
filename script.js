@@ -1,394 +1,159 @@
-* {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-}
-
-
-body {
-    min-height: 100vh;
-
-    font-family:
-        "Trebuchet MS",
-        Arial,
-        sans-serif;
-
-    color: #263750;
-
-    background:
-        linear-gradient(
-            135deg,
-            #8BA3C5,
-            #3C5070
-        );
-
-    overflow-x: hidden;
-}
-
-
 /* =========================
-   PANTALLAS
+   CAMBIAR DE PANTALLA
 ========================= */
 
-.pantalla {
-    min-height: 100vh;
+function irAPantalla(id) {
 
-    display: none;
+    const pantallas =
+        document.querySelectorAll(".pantalla");
 
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
+    pantallas.forEach(
+        function(pantalla) {
 
-    text-align: center;
+            pantalla.classList.remove(
+                "activa"
+            );
 
-    padding: 30px 20px;
-
-    animation: aparecer 0.6s ease;
-}
-
-
-.pantalla.activa {
-    display: flex;
-}
-
-
-@keyframes aparecer {
-
-    from {
-        opacity: 0;
-        transform: translateY(15px);
-    }
-
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-
-}
-
-
-/* =========================
-   DECORACIÓN
-========================= */
-
-.estrellas {
-    position: absolute;
-
-    top: 30px;
-
-    font-size: 28px;
-
-    color: #DCE7F4;
-
-    letter-spacing: 18px;
-
-    animation: flotar 3s ease-in-out infinite;
-}
-
-
-@keyframes flotar {
-
-    0%, 100% {
-        transform: translateY(0);
-    }
-
-    50% {
-        transform: translateY(-8px);
-    }
-
-}
-
-
-/* =========================
-   TEXTOS
-========================= */
-
-h1 {
-    font-size: clamp(45px, 9vw, 90px);
-
-    line-height: 0.95;
-
-    color: white;
-
-    text-shadow:
-        5px 5px 0 #3C5070,
-        8px 8px 0 #263750;
-
-    margin-bottom: 25px;
-}
-
-
-h2 {
-    font-size: clamp(30px, 6vw, 55px);
-
-    color: white;
-
-    text-shadow:
-        4px 4px 0 #3C5070;
-
-    margin-bottom: 15px;
-}
-
-
-h3 {
-    margin: 15px 0;
-
-    color: #263750;
-}
-
-
-p {
-    font-size: 18px;
-
-    margin: 8px;
-}
-
-
-/* =========================
-   CHIBI
-========================= */
-
-.chibi-container {
-    width: 260px;
-    height: 260px;
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    margin: 10px;
-}
-
-
-.chibi {
-    max-width: 100%;
-    max-height: 100%;
-
-    image-rendering: pixelated;
-
-    filter:
-        drop-shadow(
-            5px 7px 0 rgba(38,55,80,0.3)
-        );
-}
-
-
-.placeholder {
-    width: 200px;
-    height: 200px;
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    background: #B8C9DF;
-
-    border: 4px dashed #3C5070;
-
-    color: #3C5070;
-
-    font-weight: bold;
-
-    border-radius: 15px;
-}
-
-
-.dialogo {
-    background: white;
-
-    padding: 15px 25px;
-
-    border-radius: 20px;
-
-    border: 4px solid #3C5070;
-
-    font-weight: bold;
-
-    margin-bottom: 20px;
-
-    box-shadow:
-        5px 5px 0 #263750;
-}
-
-
-/* =========================
-   BOTONES
-========================= */
-
-.boton {
-    border: none;
-
-    background: #627A9C;
-
-    color: white;
-
-    font-size: 18px;
-
-    font-weight: bold;
-
-    padding: 14px 25px;
-
-    border-radius: 15px;
-
-    cursor: pointer;
-
-    border: 3px solid #263750;
-
-    box-shadow:
-        4px 4px 0 #263750;
-
-    transition: 0.15s;
-}
-
-
-.boton:hover {
-    transform: translateY(-3px);
-}
-
-
-.boton:active {
-    transform: translate(
-        3px,
-        3px
+        }
     );
 
-    box-shadow:
-        1px 1px 0 #263750;
-}
+
+    const nuevaPantalla =
+        document.getElementById(id);
 
 
-.boton.grande {
-    font-size: 24px;
+    if (!nuevaPantalla) {
 
-    padding: 18px 35px;
+        console.error(
+            "No existe la pantalla:",
+            id
+        );
+
+        return;
+    }
+
+
+    nuevaPantalla.classList.add(
+        "activa"
+    );
+
+
+    window.scrollTo({
+        top: 0,
+        behavior: "smooth"
+    });
+
 }
 
 
 /* =========================
-   JUEGO DEL PASTEL
+   INGREDIENTES
 ========================= */
 
-.juego-pastel {
-    width: min(900px, 95vw);
-
-    display: flex;
-
-    justify-content: space-around;
-
-    align-items: center;
-
-    gap: 30px;
-
-    margin: 25px 0;
-}
+let ingredientes = 0;
 
 
-.ingredientes {
-    display: flex;
-
-    flex-direction: column;
-
-    gap: 15px;
-}
+const ordenIngredientes = [
+    "harina",
+    "huevo",
+    "leche"
+];
 
 
-.ingrediente {
-    width: 130px;
-    min-height: 100px;
+function agregarIngrediente(tipo) {
 
-    background: #DCE7F4;
-
-    border: 4px solid #3C5070;
-
-    border-radius: 15px;
-
-    cursor: pointer;
-
-    font-weight: bold;
-
-    color: #263750;
-
-    transition: 0.2s;
-}
+    const boton =
+        document.getElementById(tipo);
 
 
-.ingrediente img {
-    width: 55px;
-    height: 55px;
-
-    object-fit: contain;
-
-    image-rendering: pixelated;
-}
+    if (!boton) {
+        return;
+    }
 
 
-.ingrediente:hover {
-    transform: scale(1.05);
-}
+    if (
+        boton.classList.contains(
+            "bloqueado"
+        )
+    ) {
+        return;
+    }
 
 
-.ingrediente.bloqueado {
-    opacity: 0.4;
-
-    cursor: not-allowed;
-}
+    ingredientes++;
 
 
-.bowl-area {
-    display: flex;
-
-    flex-direction: column;
-
-    align-items: center;
-}
+    boton.disabled = true;
 
 
-.bowl {
-    width: 240px;
-    height: 180px;
-
-    background: #B8C9DF;
-
-    border: 6px solid #263750;
-
-    border-radius:
-        20px 20px 80px 80px;
-
-    display: flex;
-
-    align-items: center;
-    justify-content: center;
-
-    font-size: 80px;
-
-    position: relative;
-
-    overflow: hidden;
-}
+    boton.classList.add(
+        "bloqueado"
+    );
 
 
-#mezcla {
-    position: absolute;
-
-    width: 120px;
-    height: 50px;
-
-    background: #DCE7F4;
-
-    border-radius: 50%;
-
-    bottom: 35px;
-
-    opacity: 0;
-
-    transition: 0.4s;
-}
+    document.getElementById(
+        "ingredientes-usados"
+    ).textContent =
+        "Ingredientes: " +
+        ingredientes +
+        " / 3";
 
 
-#ingredientes-usados {
-    margin-top: 15px;
+    document.getElementById(
+        "mezcla"
+    ).style.opacity =
+        ingredientes / 3;
 
-    font-weight: bold;
+
+    const siguiente =
+        ordenIngredientes[
+            ingredientes
+        ];
+
+
+    if (siguiente) {
+
+        document.getElementById(
+            siguiente
+        ).classList.remove(
+            "bloqueado"
+        );
+
+
+        const mensajes = {
+
+            huevo:
+                "Ahora agrega el huevo.",
+
+            leche:
+                "¡Perfecto! Ahora agrega la leche."
+
+        };
+
+
+        document.getElementById(
+            "instruccion"
+        ).textContent =
+            mensajes[siguiente];
+
+    }
+
+    else {
+
+        document.getElementById(
+            "instruccion"
+        ).textContent =
+            "¡Tenemos todos los ingredientes!";
+
+
+        document.getElementById(
+            "batir-area"
+        ).classList.remove(
+            "oculto"
+        );
+
+    }
+
 }
 
 
@@ -396,36 +161,69 @@ p {
    BATIR
 ========================= */
 
-.oculto {
-    display: none !important;
-}
+let vecesBatido = 0;
 
 
-.barra {
-    width: 280px;
+function batir() {
 
-    height: 20px;
-
-    background: #DCE7F4;
-
-    border: 3px solid #263750;
-
-    border-radius: 10px;
-
-    margin: 15px auto;
-
-    overflow: hidden;
-}
+    if (
+        vecesBatido >= 5
+    ) {
+        return;
+    }
 
 
-#progreso-batir {
-    width: 0%;
+    vecesBatido++;
 
-    height: 100%;
 
-    background: #627A9C;
+    const porcentaje =
+        vecesBatido * 20;
 
-    transition: 0.2s;
+
+    document.getElementById(
+        "progreso-batir"
+    ).style.width =
+        porcentaje + "%";
+
+
+    document.getElementById(
+        "contador-batir"
+    ).textContent =
+        vecesBatido +
+        " / 5";
+
+
+    document.getElementById(
+        "mezcla"
+    ).style.transform =
+        "rotate(" +
+        (vecesBatido * 15) +
+        "deg)";
+
+
+    if (
+        vecesBatido === 5
+    ) {
+
+        document.getElementById(
+            "boton-batir"
+        ).disabled = true;
+
+
+        document.getElementById(
+            "horno-area"
+        ).classList.remove(
+            "oculto"
+        );
+
+
+        document.getElementById(
+            "instruccion"
+        ).textContent =
+            "¡La mezcla está lista!";
+
+    }
+
 }
 
 
@@ -433,35 +231,40 @@ p {
    HORNO
 ========================= */
 
-.horno-boton {
-    width: 220px;
+function hornear() {
 
-    padding: 15px;
-
-    border-radius: 15px;
-
-    border: 4px solid #263750;
-
-    background: #627A9C;
-
-    color: white;
-
-    font-size: 18px;
-
-    font-weight: bold;
-
-    cursor: pointer;
-}
+    const mensaje =
+        document.getElementById(
+            "horno-mensaje"
+        );
 
 
-.horno-boton img {
-    width: 90px;
+    mensaje.textContent =
+        "🔥 Horneando...";
 
-    height: 90px;
 
-    object-fit: contain;
+    setTimeout(
+        function() {
 
-    image-rendering: pixelated;
+            mensaje.textContent =
+                "✨ ¡DING! ¡El pastel está listo!";
+
+        },
+        2500
+    );
+
+
+    setTimeout(
+        function() {
+
+            irAPantalla(
+                "decorar"
+            );
+
+        },
+        4000
+    );
+
 }
 
 
@@ -469,152 +272,137 @@ p {
    DECORACIÓN
 ========================= */
 
-.decoracion-juego {
-    display: flex;
+let colorElegido = null;
 
-    gap: 60px;
 
-    align-items: center;
+let decoraciones = [];
 
-    width: min(1000px, 95vw);
+
+function elegirColor(color) {
+
+    colorElegido = color;
+
+
+    const pastel =
+        document.querySelector(
+            ".pastel-final"
+        );
+
+
+    pastel.style.background =
+        color;
+
+
+    pastel.style.boxShadow =
+        "inset 0 0 0 8px rgba(38,55,80,0.2)";
+
+
+    comprobarPastel();
+
 }
 
 
-.pastel-final {
-    position: relative;
+function agregarDecoracion(nombre) {
 
-    width: 400px;
-    height: 350px;
+    if (
+        decoraciones.length >= 3
+    ) {
+        return;
+    }
 
-    background: rgba(220,231,244,0.3);
 
-    border: 5px solid #3C5070;
+    decoraciones.push(
+        nombre
+    );
 
-    border-radius: 20px;
 
-    display: flex;
+    const imagen =
+        document.createElement(
+            "img"
+        );
 
-    align-items: center;
-    justify-content: center;
+
+    imagen.src =
+        "assets/" + nombre;
+
+
+    imagen.classList.add(
+        "decoracion-puesta"
+    );
+
+
+    const posiciones = [
+
+        {
+            top: "20%",
+            left: "25%"
+        },
+
+        {
+            top: "45%",
+            left: "55%"
+        },
+
+        {
+            top: "25%",
+            left: "65%"
+        }
+
+    ];
+
+
+    const posicion =
+        posiciones[
+            decoraciones.length - 1
+        ];
+
+
+    imagen.style.top =
+        posicion.top;
+
+
+    imagen.style.left =
+        posicion.left;
+
+
+    document.getElementById(
+        "decoraciones-colocadas"
+    ).appendChild(
+        imagen
+    );
+
+
+    document.getElementById(
+        "contador-decoracion"
+    ).textContent =
+        "Decoraciones: " +
+        decoraciones.length +
+        " / 3";
+
+
+    comprobarPastel();
+
 }
 
 
-.pastel-final img {
-    max-width: 85%;
-    max-height: 85%;
+function comprobarPastel() {
 
-    image-rendering: pixelated;
-}
+    if (
 
+        colorElegido !== null &&
 
-.controles {
-    background: #DCE7F4;
+        decoraciones.length === 3
 
-    border: 4px solid #263750;
+    ) {
 
-    border-radius: 20px;
+        document.getElementById(
+            "terminar-decoracion"
+        ).classList.remove(
+            "oculto"
+        );
 
-    padding: 20px;
+    }
 
-    width: 300px;
-}
-
-
-.colores {
-    display: flex;
-
-    justify-content: center;
-
-    gap: 10px;
-
-    margin-bottom: 20px;
-}
-
-
-.color {
-    width: 45px;
-    height: 45px;
-
-    border-radius: 50%;
-
-    border: 3px solid #263750;
-
-    cursor: pointer;
-}
-
-
-.color-azul {
-    background: #627A9C;
-}
-
-
-.color-claro {
-    background: #B8C9DF;
-}
-
-
-.color-oscuro {
-    background: #3C5070;
-}
-
-
-.color-blanco {
-    background: white;
-}
-
-
-.decoraciones {
-    display: grid;
-
-    grid-template-columns:
-        repeat(3, 1fr);
-
-    gap: 10px;
-}
-
-
-.decoraciones button {
-    height: 70px;
-
-    border: 3px solid #3C5070;
-
-    background: white;
-
-    border-radius: 10px;
-
-    cursor: pointer;
-}
-
-
-.decoraciones img {
-    width: 55px;
-    height: 55px;
-
-    object-fit: contain;
-
-    image-rendering: pixelated;
-}
-
-
-#decoraciones-colocadas {
-    position: absolute;
-
-    inset: 0;
-
-    pointer-events: none;
-}
-
-
-.decoracion-puesta {
-    position: absolute;
-
-    width: 60px;
-
-    height: 60px;
-
-    object-fit: contain;
-
-    image-rendering: pixelated;
 }
 
 
@@ -622,209 +410,71 @@ p {
    REGALOS
 ========================= */
 
-.regalos {
-    display: flex;
+function abrirCarta() {
 
-    gap: 35px;
-
-    margin-top: 35px;
-}
-
-
-.regalo-opcion {
-    width: 190px;
-    height: 190px;
-
-    background: #DCE7F4;
-
-    border: 5px solid #263750;
-
-    border-radius: 25px;
-
-    box-shadow:
-        6px 6px 0 #263750;
-
-    cursor: pointer;
-
-    color: #263750;
-
-    display: flex;
-
-    flex-direction: column;
-
-    align-items: center;
-
-    justify-content: center;
-
-    gap: 15px;
-
-    font-size: 20px;
-
-    transition: 0.2s;
-}
+    document.getElementById(
+        "carta-area"
+    ).classList.remove(
+        "oculto"
+    );
 
 
-.regalo-opcion span {
-    font-size: 65px;
-}
-
-
-.regalo-opcion:hover {
-    transform: translateY(-8px);
-}
-
-
-/* =========================
-   CARTA
-========================= */
-
-.regalo-contenido {
-    margin-top: 30px;
-}
-
-
-.carta {
-    width: min(600px, 90vw);
-
-    background: #DCE7F4;
-
-    border: 5px solid #3C5070;
-
-    border-radius: 10px;
-
-    padding: 40px;
-
-    box-shadow:
-        8px 8px 0 #263750;
-
-    animation: abrirCarta 0.7s ease;
-}
-
-
-@keyframes abrirCarta {
-
-    from {
-        opacity: 0;
-        transform:
-            scale(0.8)
-            rotate(-2deg);
-    }
-
-    to {
-        opacity: 1;
-        transform:
-            scale(1)
-            rotate(0);
-    }
+    document.getElementById(
+        "caja-area"
+    ).classList.add(
+        "oculto"
+    );
 
 }
 
 
-.sello {
-    font-size: 45px;
+function abrirCaja() {
 
-    margin-bottom: 15px;
-}
-
-
-.carta h3 {
-    font-size: 30px;
-}
+    document.getElementById(
+        "caja-area"
+    ).classList.remove(
+        "oculto"
+    );
 
 
-/* =========================
-   CAJITA
-========================= */
-
-.caja {
-    font-size: 130px;
-
-    cursor: pointer;
-
-    transition: 0.3s;
-}
-
-
-.caja:hover {
-    transform: scale(1.1) rotate(-5deg);
-}
-
-
-#dibujo-final img {
-    max-width: min(600px, 90vw);
-
-    max-height: 500px;
-
-    image-rendering: pixelated;
-
-    border-radius: 15px;
-
-    animation: aparecerDibujo 1s ease;
-}
-
-
-@keyframes aparecerDibujo {
-
-    from {
-        opacity: 0;
-
-        transform:
-            scale(0.5)
-            rotate(-8deg);
-    }
-
-    to {
-        opacity: 1;
-
-        transform:
-            scale(1)
-            rotate(0);
-    }
+    document.getElementById(
+        "carta-area"
+    ).classList.add(
+        "oculto"
+    );
 
 }
 
 
-/* =========================
-   MÓVIL
-========================= */
+function abrirDibujo() {
 
-@media (max-width: 700px) {
-
-    .juego-pastel {
-        flex-direction: column;
-    }
+    document.getElementById(
+        "caja"
+    ).style.display =
+        "none";
 
 
-    .ingredientes {
-        flex-direction: row;
-
-        flex-wrap: wrap;
-
-        justify-content: center;
-    }
+    document.getElementById(
+        "caja-texto"
+    ).style.display =
+        "none";
 
 
-    .decoracion-juego {
-        flex-direction: column;
+    document.getElementById(
+        "dibujo-final"
+    ).classList.remove(
+        "oculto"
+    );
 
-        gap: 25px;
-    }
-
-
-    .pastel-final {
-        width: 90vw;
-        height: 300px;
-    }
+}
 
 
-    .regalos {
-        flex-direction: column;
-    }
+function cerrarRegalo() {
 
-
-    .regalo-opcion {
-        width: 220px;
-        height: 150px;
-    }
+    document.getElementById(
+        "carta-area"
+    ).classList.add(
+        "oculto"
+    );
 
 }
