@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Feliz cumpleaños, Dany 💙</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <!-- =========================
+         PANTALLA 1 - CUMPLEAÑOS
+    ========================== -->
+
+    <section id="inicio" class="pantalla activa">
+
+        <div class="estrellas">✦ ✧ ★ ✦ ✧</div>
+
+        <h1>¡FELIZ<br>CUMPLEAÑOS, DANY!</h1>
+
+        <div class="chibi-container">
+
+            <img
+                src="assets/chibi.png"
+                alt="Chibi"
+                class="chibi"
+                onerror="this.style.display='none'; document.getElementById('chibi-placeholder').style.display='flex';"
+            >
+
+            <div id="chibi-placeholder" class="placeholder">
+                TU CHIBI AQUÍ
+            </div>
+
+        </div>
+
+        <div class="dialogo">
+            ¡Hagamos un pastel! 🍰
+        </div>
+
+        <button class="boton principal" onclick="irAPantalla('pastel')">
+            🍰 Hacer pastel
+        </button>
+
+    </section>
+
+
+    <!-- =========================
+         PANTALLA 2 - HACER PASTEL
+    ========================== -->
+
+    <section id="pastel" class="pantalla">
+
+        <h2>🍰 HAGAMOS UN PASTEL</h2>
+
+        <p id="instruccion">
+            Primero necesitamos harina.
+        </p>
+
+        <div class="juego-pastel">
+
+            <div class="ingredientes">
+
+                <button
+                    id="harina"
+                    class="ingrediente"
+                    onclick="agregarIngrediente('harina')"
+                >
+                    <img
+                        src="assets/harina.png"
+                        alt="Harina"
+                        onerror="this.style.display='none';"
+                    >
+                    <span>Harina</span>
+                </button>
+
+
+                <button
+                    id="huevo"
+                    class="ingrediente bloqueado"
+                    onclick="agregarIngrediente('huevo')"
+                >
+                    <img
+                        src="assets/huevo.png"
+                        alt="Huevo"
+                        onerror="this.style.display='none';"
+                    >
+                    <span>Huevo</span>
+                </button>
+
+
+                <button
+                    id="leche"
+                    class="ingrediente bloqueado"
+                    onclick="agregarIngrediente('leche')"
+                >
+                    <img
+                        src="assets/leche.png"
+                        alt="Leche"
+                        onerror="this.style.display='none';"
+                    >
+                    <span>Leche</span>
+                </button>
+
+            </div>
+
+
+            <div class="bowl-area">
+
+                <div class="bowl">
+
+                    <div id="mezcla"></div>
+
+                    <span>🥣</span>
+
+                </div>
+
+                <div id="ingredientes-usados">
+                    Ingredientes: 0/3
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- BATIR -->
+
+        <div id="batir-area" class="oculto">
+
+            <h3>¡Ahora hay que batir!</h3>
+
+            <button
+                id="boton-batir"
+                class="boton grande"
+                onclick="batir()"
+            >
+                🥄 BATIR
+            </button>
+
+            <div class="barra">
+                <div id="progreso-batir"></div>
+            </div>
+
+            <p id="contador-batir">0 / 5</p>
+
+        </div>
+
+
+        <!-- HORNO -->
+
+        <div id="horno-area" class="oculto">
+
+            <h3>¡La mezcla está lista!</h3>
+
+            <button
+                class="horno-boton"
+                onclick="hornear()"
+            >
+                <img
+                    src="assets/horno.png"
+                    alt="Horno"
+                    onerror="this.style.display='none';"
+                >
+
+                🔥 Meter al horno
+            </button>
+
+            <p id="horno-mensaje"></p>
+
+        </div>
+
+    </section>
+
+
+    <!-- =========================
+         PANTALLA 3 - DECORAR
+    ========================== -->
+
+    <section id="decorar" class="pantalla">
+
+        <h2>🎂 ¡DECORA EL PASTEL!</h2>
+
+        <p>
+            Elige <strong>un color</strong> y
+            <strong>3 decoraciones</strong>.
+        </p>
+
+
+        <div class="decoracion-juego">
+
+            <div class="pastel-final">
+
+                <img
+                    id="pastel-imagen"
+                    src="assets/pastel.png"
+                    alt="Pastel"
+                    onerror="this.style.display='none';"
+                >
+
+                <div id="pastel-placeholder" class="placeholder">
+                    TU PASTEL AQUÍ
+                </div>
+
+                <div id="decoraciones-colocadas"></div>
+
+            </div>
+
+
+            <div class="controles">
+
+                <h3>🎨 COLOR</h3>
+
+                <div class="colores">
+
+                    <button
+                        class="color color-azul"
+                        onclick="elegirColor('#627A9C')"
+                    ></button>
+
+                    <button
+                        class="color color-claro"
+                        onclick="elegirColor('#B8C9DF')"
+                    ></button>
+
+                    <button
+                        class="color color-oscuro"
+                        onclick="elegirColor('#3C5070')"
+                    ></button>
+
+                    <button
+                        class="color color-blanco"
+                        onclick="elegirColor('#FFFFFF')"
+                    ></button>
+
+                </div>
+
+
+                <h3>✨ DECORACIONES</h3>
+
+                <div class="decoraciones">
+
+                    <button
+                        onclick="agregarDecoracion('decoracion1.png')"
+                    >
+                        <img src="assets/decoracion1.png" alt="Decoración 1">
+                    </button>
+
+                    <button
+                        onclick="agregarDecoracion('decoracion2.png')"
+                    >
+                        <img src="assets/decoracion2.png" alt="Decoración 2">
+                    </button>
+
+                    <button
+                        onclick="agregarDecoracion('decoracion3.png')"
+                    >
+                        <img src="assets/decoracion3.png" alt="Decoración 3">
+                    </button>
+
+                    <button
+                        onclick="agregarDecoracion('decoracion4.png')"
+                    >
+                        <img src="assets/decoracion4.png" alt="Decoración 4">
+                    </button>
+
+                    <button
+                        onclick="agregarDecoracion('decoracion5.png')"
+                    >
+                        <img src="assets/decoracion5.png" alt="Decoración 5">
+                    </button>
+
+                </div>
+
+
+                <p id="contador-decoracion">
+                    Decoraciones: 0 / 3
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <button
+            id="terminar-decoracion"
+            class="boton principal oculto"
+            onclick="irAPantalla('regalo')"
+        >
+            ✨ ¡Terminé mi pastel!
+        </button>
+
+    </section>
+
+
+    <!-- =========================
+         PANTALLA 4 - REGALO
+    ========================== -->
+
+    <section id="regalo" class="pantalla">
+
+        <h2>🎁 TENGO ALGO PARA TI...</h2>
+
+        <p class="subtitulo">
+            Elige una de las dos opciones 💙
+        </p>
+
+
+        <div class="regalos">
+
+            <button
+                class="regalo-opcion"
+                onclick="abrirCarta()"
+            >
+                <span>💌</span>
+                <strong>CARTA</strong>
+            </button>
+
+
+            <button
+                class="regalo-opcion"
+                onclick="abrirCaja()"
+            >
+                <span>🎁</span>
+                <strong>CAJITA</strong>
+            </button>
+
+        </div>
+
+
+        <!-- CARTA -->
+
+        <div id="carta-area" class="regalo-contenido oculto">
+
+            <div class="carta">
+
+                <div class="sello">💙</div>
+
+                <h3>Para mi honey</h3>
+
+                <p>
+                    AQUÍ VA TU CARTA.
+                </p>
+
+                <p>
+                    Puedes escribir aquí todo lo que quieras
+                    decirle a Dany.
+                </p>
+
+                <p>
+                    💙 Te amo muchísimo.
+                </p>
+
+            </div>
+
+            <button
+                class="boton"
+                onclick="cerrarRegalo()"
+            >
+                Volver
+            </button>
+
+        </div>
+
+
+        <!-- CAJITA -->
+
+        <div id="caja-area" class="regalo-contenido oculto">
+
+            <div
+                id="caja"
+                class="caja"
+                onclick="abrirDibujo()"
+            >
+                🎁
+            </div>
+
+            <p id="caja-texto">
+                Haz clic en la cajita...
+            </p>
+
+
+            <div id="dibujo-final" class="oculto">
+
+                <img
+                    src="assets/dibujo-regalo.png"
+                    alt="Dibujo para Dany"
+                >
+
+                <h3>💙 Para ti.</h3>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <script src="script.js"></script>
+
+</body>
+</html>
